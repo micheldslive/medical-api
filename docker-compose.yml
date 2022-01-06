@@ -1,0 +1,37 @@
+version: '3'
+services:
+  database:
+    image: postgres:13.1
+    container_name: 'database'
+    restart: 'always'
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=medical123
+      - APP_DB_USER=medical
+      - APP_DB_PASS=medical123
+      - APP_DB_NAME=medical
+    networks:
+      - backend
+  api:
+    image: node:alpine
+    container_name: 'api'
+    ports:
+      - '4000:4000'
+    expose:
+      - '4000'
+    working_dir: '/workspace'
+    volumes:
+      - .:/workspace/
+    command: 'yarn start'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: 'bridge'
