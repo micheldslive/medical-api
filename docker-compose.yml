@@ -5,7 +5,7 @@ services:
     container_name: 'database'
     restart: 'always'
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/
+      - .:/docker-entrypoint-initdb.d/
     ports:
       - '5432:5432'
     expose:
@@ -18,17 +18,17 @@ services:
       - APP_DB_NAME=medical
     networks:
       - backend
-  api:
-    image: node:alpine
-    container_name: 'api'
+  medical:
+    image: node
+    container_name: 'medical'
     ports:
       - '4000:4000'
     expose:
       - '4000'
-    working_dir: '/workspace'
+    working_dir: '/medical/app'
     volumes:
-      - .:/workspace/
-    command: 'yarn start'
+      - .:/medical/app
+    command: 'npm start'
     networks:
       - backend
 

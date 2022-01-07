@@ -1,13 +1,15 @@
-FROM node:alpine
+FROM node
 
-WORKDIR /workspace
+WORKDIR /medical/app
 
-COPY package.json yarn.lock /workspace/
+RUN npm install -g @nestjs/cli
 
-RUN yarn
+COPY package.json ./
+
+RUN npm i --silent
 
 COPY . .
 
 EXPOSE 4000
 
-CMD ["yarn", "start"]
+CMD npm start
